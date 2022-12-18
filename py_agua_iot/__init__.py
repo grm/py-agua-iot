@@ -290,6 +290,9 @@ class agua_iot(object):
                                         allow_redirects=False,
                                         timeout=DEFAULT_TIMEOUT_VALUE)
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            _LOGGER.debug("--------> Connection Error")
+            import pprint
+            pprint.pprint(response)
             raise ConnectionError(str.format(
                 "Connection to {0} not possible", url))
 
@@ -297,6 +300,9 @@ class agua_iot(object):
             self.do_refresh_token()
             return self.handle_webcall(method, url, payload)
         elif response.status_code != 200:
+            _LOGGER.debug("--------> Not 200")
+            import pprint
+            pprint.pprint(response)
             return False
 
         return response.json()
